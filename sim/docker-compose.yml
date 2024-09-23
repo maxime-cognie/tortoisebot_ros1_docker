@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   gazebo:
-    image: tortoisebot-ros1-gazebo:latest
+    image: mcognie/maximecognie-cp22:tortoisebot-ros1-gazebo
     build:
       context: .
       dockerfile: tortoisebot_gazebo.Dockerfile
@@ -15,7 +15,7 @@ services:
       - ros1_net
 
   slam:
-    image: tortoisebot-ros1-slam:latest
+    image: mcognie/maximecognie-cp22:tortoisebot-ros1-slam
     build:
       context: .
       dockerfile: tortoisebot_slam.Dockerfile
@@ -32,7 +32,7 @@ services:
       - ros1_net
 
   waypoints:
-    image: tortoisebot-ros1-waypoints:latest
+    image: mcognie/maximecognie-cp22:tortoisebot-ros1-waypoints
     build:
       context: .
       dockerfile: tortoisebot_waypoints.Dockerfile
@@ -45,7 +45,7 @@ services:
       - ros1_net
 
   webapp:
-    image: tortoisebot-ros1-webapp:latest
+    image: mcognie/maximecognie-cp22:tortoisebot-ros1-webapp
     build:
       context: .
       dockerfile: tortoisebot_webapp.Dockerfile
