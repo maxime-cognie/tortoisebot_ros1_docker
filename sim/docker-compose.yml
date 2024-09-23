@@ -1,0 +1,67 @@
+version: '3.7'
+services:
+  gazebo:
+    image: tortoisebot-ros1-gazebo:latest
+    build:
+      context: .
+      dockerfile: tortoisebot_gazebo.Dockerfile
+    hostname: master
+    restart: always
+    environment: 
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    networks:
+      - ros1_net
+
+  slam:
+    image: tortoisebot-ros1-slam:latest
+    build:
+      context: .
+      dockerfile: tortoisebot_slam.Dockerfile
+    environment:
+      - "ROS_HOSTNAME=slam"
+    restart: always
+    depends_on:
+      - gazebo
+    environment: 
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    networks:
+      - ros1_net
+
+  waypoints:
+    image: tortoisebot-ros1-waypoints:latest
+    build:
+      context: .
+      dockerfile: tortoisebot_waypoints.Dockerfile
+    environment:
+      - "ROS_HOSTNAME=waypoints"
+    restart: always
+    depends_on:
+      - gazebo
+    networks:
+      - ros1_net
+
+  webapp:
+    image: tortoisebot-ros1-webapp:latest
+    build:
+      context: .
+      dockerfile: tortoisebot_webapp.Dockerfile
+    environment:
+      - "ROS_HOSTNAME=webapp"
+      - "SLOT_ROSBRIDGE_PORT=20001"
+      - DISPLAY=${DISPLAY}
+    restart: always
+    depends_on:
+      - gazebo
+    networks:
+      - ros1_net
+    ports:
+      - "9090:9090"
+      - "7000:7000"
+      - "20001:20001"
+
+networks:
+  ros1_net:
