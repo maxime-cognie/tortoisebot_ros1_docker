@@ -56,3 +56,11 @@ Or you can pull the images from Docker Hub using the following command:
 `docker pull mcognie/maximecognie-cp22:tag`  where `tag` is one of the tags from the previous list. 
 <br/>  
 Then start the containers using docker-compose `docker-compose up`
+
+#### Note
+
+* real robot advice  
+If you decide to build the image on the Tortoisebot itself (raspberry pi),
+the raspberry pi might run out of ressources to avoid this issue you can increase the swap size to the necessary size.
+(e.g tested with raspberry pi 4 with 2Gb of RAM + 2Gb Swap storage)  
+As an advice opt for pulling the image from Docker Hub instead of building it yourself.
