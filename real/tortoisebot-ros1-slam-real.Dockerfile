@@ -1,4 +1,4 @@
-FROM tortoisebot-ros1-real-base:latest
+FROM mcognie/maximecognie-cp22:tortoisebot-ros1-real-base
 
 RUN apt-get update && apt-get install -y \
     ros-noetic-slam-gmapping \
