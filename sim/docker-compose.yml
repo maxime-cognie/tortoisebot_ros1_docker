@@ -8,23 +8,27 @@ services:
     hostname: master
     restart: always
     environment: 
+      - "ROS_HOSTNAME=master"
+      - ROS_MASTER_URI=http://master:11311
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
     networks:
       - ros1_net
+    ports:
+      - "11311:11311"
 
   slam:
     image: mcognie/maximecognie-cp22:tortoisebot-ros1-slam
     build:
       context: .
       dockerfile: tortoisebot_slam.Dockerfile
-    environment:
-      - "ROS_HOSTNAME=slam"
     restart: always
     depends_on:
       - gazebo
     environment: 
+      - "ROS_HOSTNAME=slam"
+      - ROS_MASTER_URI=http://master:11311
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
@@ -37,6 +41,7 @@ services:
       context: .
       dockerfile: tortoisebot_waypoints.Dockerfile
     environment:
+      - ROS_MASTER_URI=http://master:11311
       - "ROS_HOSTNAME=waypoints"
     restart: always
     depends_on:
@@ -49,17 +54,21 @@ services:
     build:
       context: .
       dockerfile: tortoisebot_webapp.Dockerfile
-    environment:
-      - "ROS_HOSTNAME=webapp"
-      - "SLOT_ROSBRIDGE_PORT=20001"
-      - DISPLAY=${DISPLAY}
-    restart: always
     depends_on:
       - gazebo
+    restart: always
+    environment:
+      - ROS_MASTER_URI=http://master:11311
+      - ROS_HOSTNAME=webapp
+      - SLOT_ROSBRIDGE_PORT=20001
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - "./tortoisebot_webapp:/catkin_ws/tortoisebot_webapp"
     networks:
       - ros1_net
     ports:
       - "9090:9090"
+      - "11315:11315"
       - "7000:7000"
       - "20001:20001"
 

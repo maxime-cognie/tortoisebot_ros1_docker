@@ -1,7 +1,5 @@
 FROM mcognie/maximecognie-cp22:tortoisebot_base_ros1
 
-ENV ROS_MASTER_URI=http://master:11311
-
 COPY ./entrypoint-waypoints.sh ./entrypoint.sh
 RUN chmod +x entrypoint.sh
 
