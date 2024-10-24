@@ -5,12 +5,12 @@ services:
     build:
       context: .
       dockerfile: tortoisebot-ros1-real-base.Dockerfile
-    container_name: master
     hostname: master
     restart: always
     privileged: true
     network_mode: "host"
     environment:
+      - ROS_MASTER_URI=http://$ROS_HOSTNAME:11311
       - ROS_HOSTNAME=$ROS_HOSTNAME
     ports:
        - "11311:11311"
@@ -46,7 +46,7 @@ services:
       context: .
       dockerfile: tortoisebot-ros1-slam-real.Dockerfile
     depends_on:
-      - master
+      - bringup
     restart: always
     privileged: true
     network_mode: "host"
@@ -65,7 +65,7 @@ services:
       context: .
       dockerfile: tortoisebot-ros1-slam-real.Dockerfile
     depends_on:
-      - master
+      - bringup
     restart: always
     privileged: true
     network_mode: "host"
