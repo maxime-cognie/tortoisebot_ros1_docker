@@ -37,7 +37,7 @@ WORKDIR /ros1_ws/carto_ws
 RUN rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y
 RUN src/cartographer/scripts/install_abseil.sh
 RUN /bin/bash -c "source /opt/ros/noetic/setup.bash &&\
-    catkin_make_isolated --install --use-ninja -j3 -l4"
+    catkin_make_isolated --install --use-ninja -j3 -l3"
 #-----------------------------------------------------------------#
 
 WORKDIR /ros1_ws
@@ -49,5 +49,6 @@ COPY ./ros-entrypoint-slam.sh ./entrypoint.sh
 RUN chmod +x entrypoint.sh
 
 COPY mapping.rviz /ros1_ws/src/tortoisebot/tortoisebot_slam/rviz/
+RUN sed -i 's|<node pkg="rviz" type="rviz" name="show_rviz" args="-d $(find tortoisebot_slam)/rviz/mapping.rviz"/>|""|g' src/tortoisebot/tortoisebot_slam/launch/tortoisebot_slam.launch
 # /bin/bash is the command we want to execute when running a docker container
 ENTRYPOINT ["./entrypoint.sh"]
