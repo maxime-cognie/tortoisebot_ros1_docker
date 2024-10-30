@@ -14,7 +14,7 @@ services:
       - ROS_HOSTNAME=$ROS_HOSTNAME
     ports:
        - "11311:11311"
-    command: roscore
+    command: export ROS_HOSTNAME=192.168.1.16 && roscore
 
   bringup:
     image: mcognie/maximecognie-cp22:tortoisebot-ros1-real
@@ -38,7 +38,7 @@ services:
       - /dev/mem:/dev/mem
       - /dev/vchiq:/dev/vchiq
       - /dev/ttyUSB0:/dev/ttyUSB0
-    command: roslaunch tortoisebot_firmware bringup.launch
+    command: export ROS_HOSTNAME=192.168.1.16 && roslaunch tortoisebot_firmware bringup.launch
   
   slam:
     image: mcognie/maximecognie-cp22:tortoisebot-ros1-slam-real
@@ -57,7 +57,7 @@ services:
       - DISPLAY=${DISPLAY}
       - ROS_MASTER_URI=http://$ROS_HOSTNAME:11311
       - ROS_HOSTNAME=$ROS_HOSTNAME
-    command: roslaunch tortoisebot_slam tortoisebot_slam.launch
+    command: export ROS_HOSTNAME=192.168.1.16 && roslaunch tortoisebot_slam tortoisebot_slam.launch
   
   server-bringup:
     image: mcognie/maximecognie-cp22:tortoisebot-ros1-slam-real
@@ -72,4 +72,4 @@ services:
     environment: 
       - ROS_MASTER_URI=http://$ROS_HOSTNAME:11311
       - ROS_HOSTNAME=$ROS_HOSTNAME
-    command: roslaunch tortoisebot_firmware server_bringup.launch
+    command: export ROS_HOSTNAME=192.168.1.16 && roslaunch tortoisebot_firmware server_bringup.launch
