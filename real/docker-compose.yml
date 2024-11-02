@@ -10,11 +10,11 @@ services:
     privileged: true
     network_mode: "host"
     environment:
-      - ROS_MASTER_URI=http://192.168.1.16:11311
-      - ROS_HOSTNAME=192.168.1.16
+      - ROS_MASTER_URI=http://$ROS_HOSTNAME:11311
+      - ROS_HOSTNAME=$ROS_HOSTNAME
     ports:
        - "11311:11311"
-    command: bash -c "export ROS_HOSTNAME=192.168.1.16 && roscore"
+    command: roscore
 
   bringup:
     image: mcognie/maximecognie-cp22:tortoisebot-ros1-real
@@ -27,8 +27,8 @@ services:
     restart: always
     environment: 
       - LD_LIBRARY_PATH=:/opt/vc/lib
-      - ROS_MASTER_URI=http://192.168.1.16:11311
-      - ROS_HOSTNAME=192.168.1.16
+      - ROS_MASTER_URI=http://$ROS_HOSTNAME:11311
+      - ROS_HOSTNAME=$ROS_HOSTNAME
     volumes:
       - /opt/vc:/opt/vc
     privileged: true
@@ -38,7 +38,7 @@ services:
       - /dev/mem:/dev/mem
       - /dev/vchiq:/dev/vchiq
       - /dev/ttyUSB0:/dev/ttyUSB0
-    command: bash -c "export ROS_HOSTNAME=192.168.1.16 && roslaunch tortoisebot_firmware bringup.launch"
+    command: roslaunch tortoisebot_firmware bringup.launch
   
   slam:
     image: mcognie/maximecognie-cp22:tortoisebot-ros1-slam-real
@@ -55,9 +55,9 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment: 
       - DISPLAY=${DISPLAY}
-      - ROS_MASTER_URI=http://192.168.1.16:11311
-      - ROS_HOSTNAME=192.168.1.16
-    command: bash -c "export ROS_HOSTNAME=192.168.1.16 && roslaunch tortoisebot_slam tortoisebot_slam.launch"
+      - ROS_MASTER_URI=http://$ROS_HOSTNAME:11311
+      - ROS_HOSTNAME=$ROS_HOSTNAME
+    command: roslaunch tortoisebot_slam tortoisebot_slam.launch
   
   server-bringup:
     image: mcognie/maximecognie-cp22:tortoisebot-ros1-slam-real
@@ -70,6 +70,6 @@ services:
     privileged: true
     network_mode: "host"
     environment: 
-      - ROS_MASTER_URI=http://192.168.1.16:11311
-      - ROS_HOSTNAME=192.168.1.16
-    command: bash -c "export ROS_HOSTNAME=192.168.1.16 && roslaunch tortoisebot_firmware server_bringup.launch"
+      - ROS_MASTER_URI=http://$ROS_HOSTNAME:11311
+      - ROS_HOSTNAME=$ROS_HOSTNAME
+    command: roslaunch tortoisebot_firmware server_bringup.launch
